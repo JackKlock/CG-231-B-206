@@ -9,7 +9,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     
     //Variables globales
-    var R = 10; //Radio de la esfera
+    var R = 5; //Radio de la esfera
 
     //Factores de escala
     var Sz = 3; //Factor de escala en z
@@ -53,61 +53,29 @@ function init() {
     camera.position.z = 600;
     camera.lookAt(scene.position);
 
-    // Colores
-    var   color=[{color:0xFF2626},{color:0x7EFF0C},{color:0x37FFC9}]; //Colores utilizados en el material
-    var material=[new THREE.MeshStandardMaterial(color[0]),new THREE.MeshLambertMaterial(color[1]),new THREE.MeshPhongMaterial(color[2])];
+    var geometry= new THREE.SphereGeometry(R,32,16);
+    var material = new THREE.MeshPhongMaterial( { color: 0xFF2626 } );
+    var esferag = new THREE.Mesh(geometry, material);;
 
-    //Lado de la base de la piramide
-    lado=40; 
-
-    //Altura de la piramide
-    h=50; 
-/*
-    v1=[0,0,0];
-    v2=[lado,0,0];
-    v3=[lado,0,lado];
-    v4=[0,0,lado];
-    v5=[lado/2,h,lado/2];
-
-    vertices=[v1,v2,v3,v4,v5,v1,v4,v3,v5,v2]; */
-
-    vertices2 = [v1];
-
-    geom=Geometria(vertices);
-
-    geom2= new THREE.SphereGeometry([R,R,R]);
-
-
-    //[v1,v2,v3,v4,v5]= [[0,0,0],[lado,0,0],[lado,0,lado],[0,0,lado], [lado/2,h,lado/2]]
-    //materiales para las piramides
-
-    material=[];
-    for(i=0;i<2;i++)
-        material.push(new THREE.PointsMaterial(color[i]));
-
-
-    //Figuras paras las piramides
-
-    fig=[];
-    vt=[2*lado,2*lado,0];
-    fig.push(new THREE.Line(geom,material[0]));
-    fig.push(new THREE.Mesh(geom2,material[1]));
+    //Posicion en el origen
+    vt=[0,0,0];
 
     //Translacion en [2*lado, 2*lado, 0]
-    fig[0].applyMatrix(Traslation(vt));
+    esferag.applyMatrix(Translation(vt));
 
     //Escalado a 1.5 en x,y,z
-    RealScale(fig[0],vt,[1.5,1.5,1.5]);
+    RealScale(esferag,vt,[Sx,Sy,Sz]);
 
     //Rotacion de 45 grados en x
-    RealXRotate(fig[0],vt,45);
+ /* RealXRotate(fig[0],vt,45);
 
     //Rotacion de 45 grados en y
     RealYRotate(fig[0],vt,45);
     
     //Rotacion de 45 grados en z
-    RealZRotate(fig[0],vt,60);
-    
+    RealZRotate(fig[0],vt,60); */
+
+
     // En el documento HTML
     document.body.appendChild(renderer.domElement);
 
@@ -117,13 +85,7 @@ function init() {
     scene.add(arrowY);	
     scene.add(arrowZ);
 
-    for (let i=0; i<2; i++) {
-        scene.add( fig[i] ); //Agregar Esfera
-    }
-
-    fig[1].position.x = 0;
-    fig[1].position.y = 0;
-    fig[1].position.z = 0;
+    scene.add(esferag[0]);
 
     renderer.render(scene, camera);
 }

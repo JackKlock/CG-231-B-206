@@ -3,7 +3,8 @@
 * Entradas: vertices=arreglo de vertices (arreglo de arreglos de enteros)
 * Salidas:  geom= objeto THREE.Geometry generado apartir delo arreglo vertices
 */
-function Geometria(vertices){
+
+    function Geometria(vertices){
     geom = new THREE.Geometry();
     for (let i = 0; i < vertices.length; ++i) {
         x = vertices[i][0];
@@ -13,7 +14,7 @@ function Geometria(vertices){
         geom.vertices.push(vector);
     }
     return geom;
-    }   
+    }
     
     /**
      * Traslation: Crea la matriz de Traslation a partir del vector vt
